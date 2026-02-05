@@ -87,7 +87,7 @@ const Call SpaceConfig = {
     
     // Signaling Server (replace with your server)
     signalingServer: {
-        url: 'wss://callspace-production.up.railway.app',
+        url: 'callspace-production-469c.up.railway.app',
         reconnectDelay: 2000,
         maxReconnectAttempts: 5
     },
