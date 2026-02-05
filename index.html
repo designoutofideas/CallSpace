@@ -141,10 +141,10 @@
                     <input type="text" id="remoteRoomId" placeholder="Enter remote Room ID...">
                 </div>
 
-                <button class="btn btn-primary" id="startBtn" onclick="startStream()">
+                <button class="btn btn-primary" id="startBtn">
                     <span>🚀 Start Stream</span>
                 </button>
-                <button class="btn btn-secondary" id="connectBtn" onclick="connectToPeer()" disabled>
+                <button class="btn btn-secondary" id="connectBtn" disabled>
                     <span>🔗 Connect to Guest</span>
                 </button>
 
@@ -155,7 +155,7 @@
 
                 <div class="input-group">
                     <label>Video Quality (Low-Bandwidth Optimized)</label>
-                    <select id="qualitySelect" onchange="updateQuality()">
+                    <select id="qualitySelect">
                         <option value="low">Low (240p) - Best for rural</option>
                         <option value="medium" selected>Medium (360p)</option>
                         <option value="high">High (480p)</option>
@@ -183,7 +183,7 @@
                     Recording & Tools
                 </div>
 
-                <button class="btn btn-secondary" id="recordBtn" onclick="toggleRecording()" disabled>
+                <button class="btn btn-secondary" id="recordBtn" disabled>
                     <span>● Start Recording</span>
                 </button>
 
@@ -197,7 +197,7 @@
                     Add a "Browser Source" in OBS and use this page's URL. Videos will be captured directly into OBS.
                 </div>
 
-                <button class="btn btn-danger" id="endBtn" onclick="endCall()" style="margin-top: 1rem;" disabled>
+                <button class="btn btn-danger" id="endBtn" style="margin-top: 1rem;" disabled>
                     <span>⏹️ End Call</span>
                 </button>
             </div>
@@ -208,8 +208,8 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Scripts -->
-    <script src="config.js"></script>
-    <script src="webrtc.js"></script>
-    <script src="app.js"></script>
+    <script src="config.js?v=1.0.1"></script>
+    <script src="webrtc.js?v=1.0.1"></script>
+    <script src="app.js?v=1.0.1"></script>
 </body>
 </html>

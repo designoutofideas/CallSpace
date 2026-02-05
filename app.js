@@ -98,6 +98,28 @@ class CallSpaceApp {
             this.leaveRoom();
         });
         
+        // Main control buttons
+        document.getElementById('startBtn')?.addEventListener('click', () => {
+            this.showModal('createRoomModal');
+        });
+        
+        document.getElementById('connectBtn')?.addEventListener('click', () => {
+            const remoteRoomId = document.getElementById('remoteRoomId')?.value?.trim();
+            if (remoteRoomId) {
+                document.getElementById('joinRoomId').value = remoteRoomId;
+                this.joinRoom();
+            }
+        });
+        
+        document.getElementById('endBtn')?.addEventListener('click', () => {
+            this.leaveRoom();
+        });
+        
+        // Quality selector
+        document.getElementById('qualitySelect')?.addEventListener('change', (e) => {
+            this.updateQuality(e.target.value);
+        });
+        
         // Local media controls
         document.getElementById('toggleLocalVideo')?.addEventListener('click', () => {
             this.toggleLocalVideo();
@@ -395,6 +417,15 @@ class CallSpaceApp {
                 this.webrtc.toggleAudio(enabled);
                 btn.style.opacity = enabled ? '1' : '0.5';
             }
+        }
+    }
+    
+    // Update video quality preset
+    updateQuality(quality) {
+        if (CallSpaceConfig.qualityPresets[quality]) {
+            Logger.info('Quality changed to:', quality);
+            this.showToast(`Quality set to ${CallSpaceConfig.qualityPresets[quality].label}`, 'info');
+            // Quality will be applied on next stream initialization
         }
     }
     
