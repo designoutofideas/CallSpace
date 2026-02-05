@@ -99,16 +99,12 @@ class CallSpaceApp {
         });
         
         // Main control buttons
-        document.getElementById('startBtn')?.addEventListener('click', () => {
-            this.showModal('createRoomModal');
+        document.getElementById('startBtn')?.addEventListener('click', async () => {
+            await this.startStream();
         });
         
-        document.getElementById('connectBtn')?.addEventListener('click', () => {
-            const remoteRoomId = document.getElementById('remoteRoomId')?.value?.trim();
-            if (remoteRoomId) {
-                document.getElementById('joinRoomId').value = remoteRoomId;
-                this.joinRoom();
-            }
+        document.getElementById('connectBtn')?.addEventListener('click', async () => {
+            await this.connectToRemoteRoom();
         });
         
         document.getElementById('endBtn')?.addEventListener('click', () => {
@@ -244,6 +240,127 @@ class CallSpaceApp {
         document.querySelectorAll('.modal').forEach(modal => {
             modal.classList.remove('active');
         });
+    }
+    
+    // Start streaming - simplified flow
+    async startStream() {
+        const startBtn = document.getElementById('startBtn');
+        const quality = document.getElementById('qualitySelect')?.value || 'medium';
+        const audioOnly = document.getElementById('audioOnlyMode')?.checked || false;
+        
+        try {
+            startBtn.disabled = true;
+            startBtn.innerHTML = '<span>⏳ Starting...</span>';
+            
+            // Initialize local media
+            const stream = await this.webrtc.initialize({
+                video: !audioOnly,
+                audio: true,
+                quality: quality,
+                audioOnly: audioOnly
+            });
+            
+            // Display local video
+            const localVideo = document.getElementById('localVideo');
+            if (localVideo) {
+                localVideo.srcObject = stream;
+                document.getElementById('localLabel').textContent = 'Camera Active';
+                document.getElementById('localStatus').className = 'status-indicator status-online';
+            }
+            
+            // Connect to signaling server
+            await this.webrtc.connectSignaling();
+            
+            // Generate room ID
+            const roomId = generateRoomId();
+            
+            // Join room
+            await this.webrtc.joinRoom(roomId, {
+                role: 'director',
+                name: 'Host'
+            });
+            
+            // Update UI
+            const roomIdDisplay = document.getElementById('roomId');
+            if (roomIdDisplay) {
+                roomIdDisplay.textContent = roomId;
+                roomIdDisplay.style.fontSize = '1.5rem';
+                roomIdDisplay.style.fontWeight = 'bold';
+            }
+            
+            document.getElementById('copyRoomId').style.display = 'inline-flex';
+            document.getElementById('connectBtn').disabled = false;
+            document.getElementById('recordBtn').disabled = false;
+            document.getElementById('endBtn').disabled = false;
+            
+            startBtn.innerHTML = '<span>✅ Stream Active</span>';
+            startBtn.disabled = true;
+            
+            this.showToast('🎥 Stream started! Share your Room ID with others.', 'success');
+            
+        } catch (error) {
+            Logger.error('Failed to start stream:', error);
+            this.showToast(`Failed to start stream: ${error.message}`, 'error');
+            startBtn.disabled = false;
+            startBtn.innerHTML = '<span>🚀 Start Stream</span>';
+        }
+    }
+    
+    // Connect to remote room - simplified flow
+    async connectToRemoteRoom() {
+        const remoteRoomId = document.getElementById('remoteRoomId')?.value?.trim();
+        const quality = document.getElementById('qualitySelect')?.value || 'medium';
+        const audioOnly = document.getElementById('audioOnlyMode')?.checked || false;
+        const connectBtn = document.getElementById('connectBtn');
+        
+        if (!remoteRoomId) {
+            this.showToast('Please enter a Room ID to connect', 'error');
+            return;
+        }
+        
+        try {
+            connectBtn.disabled = true;
+            connectBtn.innerHTML = '<span>⏳ Connecting...</span>';
+            
+            // Initialize local media if not already done
+            if (!this.webrtc.localStream) {
+                const stream = await this.webrtc.initialize({
+                    video: !audioOnly,
+                    audio: true,
+                    quality: quality,
+                    audioOnly: audioOnly
+                });
+                
+                const localVideo = document.getElementById('localVideo');
+                if (localVideo) {
+                    localVideo.srcObject = stream;
+                    document.getElementById('localLabel').textContent = 'Camera Active';
+                    document.getElementById('localStatus').className = 'status-indicator status-online';
+                }
+                
+                // Connect to signaling server
+                await this.webrtc.connectSignaling();
+            }
+            
+            // Join the remote room
+            await this.webrtc.joinRoom(remoteRoomId, {
+                role: 'guest',
+                name: 'Guest'
+            });
+            
+            document.getElementById('recordBtn').disabled = false;
+            document.getElementById('endBtn').disabled = false;
+            
+            connectBtn.innerHTML = '<span>✅ Connected</span>';
+            
+            this.showToast(`🎉 Connected to room: ${remoteRoomId}`, 'success');
+            
+        } catch (error) {
+            Logger.error('Failed to connect:', error);
+            this.showToast(`Failed to connect: ${error.message}`, 'error');
+            connectBtn.disabled = false;
+            connectBtn.innerHTML = '<span>🔗 Connect to Guest</span>';
+        }
     }
     
     // Create a new room
@@ -431,10 +548,14 @@ class CallSpaceApp {
     
     // Copy room ID to clipboard
     async copyRoomId() {
-        const roomId = document.getElementById('displayRoomId').textContent;
+        const roomId = document.getElementById('roomId').textContent;
+        if (roomId === 'Click "Start Stream" to generate') {
+            this.showToast('Start your stream first to generate a Room ID', 'error');
+            return;
+        }
         try {
             await navigator.clipboard.writeText(roomId);
-            this.showToast('Room ID copied to clipboard!', 'success');
+            this.showToast('📋 Room ID copied to clipboard!', 'success');
         } catch (error) {
             this.showToast('Failed to copy Room ID', 'error');
         }
