@@ -33,10 +33,10 @@ class CallSpaceWebRTC {
         } = options;
         
         try {
-            const preset = Call SpaceConfig.qualityPresets[quality];
+            const preset = CallSpaceConfig.qualityPresets[quality];
             
             const constraints = {
-                audio: audio ? Call SpaceConfig.audioConstraints : false,
+                audio: audio ? CallSpaceConfig.audioConstraints : false,
                 video: (video && !audioOnly) ? {
                     ...preset.video,
                     facingMode: 'user'
@@ -62,7 +62,7 @@ class CallSpaceWebRTC {
     connectSignaling(serverUrl) {
         return new Promise((resolve, reject) => {
             try {
-                this.signalingSocket = new WebSocket(serverUrl || Call SpaceConfig.signalingServer.url);
+                this.signalingSocket = new WebSocket(serverUrl || CallSpaceConfig.signalingServer.url);
                 
                 this.signalingSocket.onopen = () => {
                     Logger.info('Connected to signaling server');
@@ -101,9 +101,9 @@ class CallSpaceWebRTC {
     
     // Handle signaling disconnect with reconnection
     handleSignalingDisconnect() {
-        if (this.reconnectAttempts < Call SpaceConfig.signalingServer.maxReconnectAttempts) {
+        if (this.reconnectAttempts < CallSpaceConfig.signalingServer.maxReconnectAttempts) {
             this.reconnectAttempts++;
-            Logger.info(`Attempting to reconnect (${this.reconnectAttempts}/${Call SpaceConfig.signalingServer.maxReconnectAttempts})`);
+            Logger.info(`Attempting to reconnect (${this.reconnectAttempts}/${CallSpaceConfig.signalingServer.maxReconnectAttempts})`);
             
             if (this.onSignalingStateChange) {
                 this.onSignalingStateChange('reconnecting');
@@ -111,7 +111,7 @@ class CallSpaceWebRTC {
             
             setTimeout(() => {
                 this.connectSignaling();
-            }, Call SpaceConfig.signalingServer.reconnectDelay * this.reconnectAttempts);
+            }, CallSpaceConfig.signalingServer.reconnectDelay * this.reconnectAttempts);
         } else {
             Logger.error('Max reconnection attempts reached');
             if (this.onSignalingStateChange) {
@@ -183,7 +183,7 @@ class CallSpaceWebRTC {
     
     // Create peer connection
     createPeerConnection(peerId) {
-        const pc = new RTCPeerConnection(Call SpaceConfig.rtcConfig);
+        const pc = new RTCPeerConnection(CallSpaceConfig.rtcConfig);
         
         // Add local stream tracks
         if (this.localStream) {
@@ -454,7 +454,7 @@ class CallSpaceWebRTC {
             } catch (error) {
                 Logger.error('Failed to get stats:', error);
             }
-        }, Call SpaceConfig.statsInterval);
+        }, CallSpaceConfig.statsInterval);
         
         this.statsIntervals.set(peerId, interval);
     }
@@ -556,8 +556,8 @@ class CallSpaceWebRTC {
         
         try {
             const videoTrack = this.localStream.getVideoTracks()[0];
-            const quality = Object.keys(Call SpaceConfig.qualityPresets)[0]; // Default quality
-            const preset = Call SpaceConfig.qualityPresets[quality];
+            const quality = Object.keys(CallSpaceConfig.qualityPresets)[0]; // Default quality
+            const preset = CallSpaceConfig.qualityPresets[quality];
             
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: {

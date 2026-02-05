@@ -165,7 +165,7 @@ class CallSpaceApp {
     
     // Check URL parameters and auto-join if present
     async checkURLParameters() {
-        const urlParams = Call SpaceConfig.urlParams;
+        const urlParams = CallSpaceConfig.urlParams;
         
         if (urlParams.room) {
             // Auto-join room from URL
@@ -504,7 +504,7 @@ class CallSpaceApp {
         const canvasStream = canvas.captureStream(30);
         const combinedStream = new MediaStream(canvasStream.getVideoTracks());
         
-        this.recorder = new MediaRecorder(combinedStream, Call SpaceConfig.recording);
+        this.recorder = new MediaRecorder(combinedStream, CallSpaceConfig.recording);
         this.recordedChunks = [];
         
         this.recorder.ondataavailable = (event) => {
@@ -639,7 +639,7 @@ class CallSpaceApp {
     saveSettings() {
         const settings = {
             signalingServer: document.getElementById('signalingServer').value,
-            theme: Call SpaceConfig.ui.theme,
+            theme: CallSpaceConfig.ui.theme,
             audioConstraints: {
                 echoCancellation: document.getElementById('echoCancellation').checked,
                 noiseSuppression: document.getElementById('noiseSuppression').checked,
