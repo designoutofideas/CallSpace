@@ -3,7 +3,7 @@
  * Handles all peer-to-peer connections based on VDO.Ninja architecture
  */
 
-class Call SpaceWebRTC {
+class CallSpaceWebRTC {
     constructor() {
         this.peers = new Map(); // Map of peer connections
         this.localStream = null;
@@ -595,5 +595,5 @@ class Call SpaceWebRTC {
 
 // Export
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = Call SpaceWebRTC;
+    module.exports = CallSpaceWebRTC;
 }

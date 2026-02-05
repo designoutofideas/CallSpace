@@ -3,7 +3,7 @@
  * Based on VDO.Ninja architecture
  */
 
-const Call SpaceConfig = {
+const CallSpaceConfig = {
     // Application version
     version: '1.0.0',
     
@@ -184,37 +184,37 @@ function parseURLParameters() {
     const urlParams = new URLSearchParams(window.location.search);
     
     if (urlParams.has('room')) {
-        Call SpaceConfig.urlParams.room = urlParams.get('room');
+        CallSpaceConfig.urlParams.room = urlParams.get('room');
     }
     if (urlParams.has('push')) {
-        Call SpaceConfig.urlParams.push = urlParams.get('push');
+        CallSpaceConfig.urlParams.push = urlParams.get('push');
     }
     if (urlParams.has('view')) {
-        Call SpaceConfig.urlParams.view = urlParams.get('view');
+        CallSpaceConfig.urlParams.view = urlParams.get('view');
     }
     if (urlParams.has('quality')) {
-        Call SpaceConfig.urlParams.quality = urlParams.get('quality');
+        CallSpaceConfig.urlParams.quality = urlParams.get('quality');
     }
     if (urlParams.has('audio')) {
-        Call SpaceConfig.urlParams.audio = urlParams.get('audio') === '1';
+        CallSpaceConfig.urlParams.audio = urlParams.get('audio') === '1';
     }
     if (urlParams.has('video')) {
-        Call SpaceConfig.urlParams.video = urlParams.get('video') === '1';
+        CallSpaceConfig.urlParams.video = urlParams.get('video') === '1';
     }
     if (urlParams.has('password')) {
-        Call SpaceConfig.urlParams.password = urlParams.get('password');
+        CallSpaceConfig.urlParams.password = urlParams.get('password');
     }
     if (urlParams.has('name')) {
-        Call SpaceConfig.urlParams.name = urlParams.get('name');
+        CallSpaceConfig.urlParams.name = urlParams.get('name');
     }
     if (urlParams.has('director')) {
-        Call SpaceConfig.urlParams.director = true;
+        CallSpaceConfig.urlParams.director = true;
     }
     if (urlParams.has('scene')) {
-        Call SpaceConfig.urlParams.scene = true;
+        CallSpaceConfig.urlParams.scene = true;
     }
     if (urlParams.has('bitrate')) {
-        Call SpaceConfig.urlParams.bitrate = parseInt(urlParams.get('bitrate'));
+        CallSpaceConfig.urlParams.bitrate = parseInt(urlParams.get('bitrate'));
     }
 }
 
@@ -226,16 +226,16 @@ function loadSavedSettings() {
             const settings = JSON.parse(savedSettings);
             
             if (settings.signalingServer) {
-                Call SpaceConfig.signalingServer.url = settings.signalingServer;
+                CallSpaceConfig.signalingServer.url = settings.signalingServer;
             }
             if (settings.theme) {
-                Call SpaceConfig.ui.theme = settings.theme;
+                CallSpaceConfig.ui.theme = settings.theme;
             }
             if (settings.language) {
-                Call SpaceConfig.ui.language = settings.language;
+                CallSpaceConfig.ui.language = settings.language;
             }
             if (settings.audioConstraints) {
-                Object.assign(Call SpaceConfig.audioConstraints, settings.audioConstraints);
+                Object.assign(CallSpaceConfig.audioConstraints, settings.audioConstraints);
             }
         } catch (e) {
             console.error('Failed to load saved settings:', e);
@@ -272,22 +272,22 @@ function generateStreamId() {
 // Utility: Logger
 const Logger = {
     debug: (...args) => {
-        if (Call SpaceConfig.logging.level === 'debug' && Call SpaceConfig.logging.console) {
+        if (CallSpaceConfig.logging.level === 'debug' && CallSpaceConfig.logging.console) {
             console.log('[DEBUG]', ...args);
         }
     },
     info: (...args) => {
-        if (['debug', 'info'].includes(Call SpaceConfig.logging.level) && Call SpaceConfig.logging.console) {
+        if (['debug', 'info'].includes(CallSpaceConfig.logging.level) && CallSpaceConfig.logging.console) {
             console.log('[INFO]', ...args);
         }
     },
     warn: (...args) => {
-        if (['debug', 'info', 'warn'].includes(Call SpaceConfig.logging.level) && Call SpaceConfig.logging.console) {
+        if (['debug', 'info', 'warn'].includes(CallSpaceConfig.logging.level) && CallSpaceConfig.logging.console) {
             console.warn('[WARN]', ...args);
         }
     },
     error: (...args) => {
-        if (Call SpaceConfig.logging.console) {
+        if (CallSpaceConfig.logging.console) {
             console.error('[ERROR]', ...args);
         }
     }
@@ -300,7 +300,7 @@ loadSavedSettings();
 // Export for use in other files
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
-        Call SpaceConfig,
+        CallSpaceConfig,
         generateRoomId,
         generateStreamId,
         saveSettings,

@@ -3,9 +3,9 @@
  * Connects UI with WebRTC functionality
  */
 
-class Call SpaceApp {
+class CallSpaceApp {
     constructor() {
-        this.webrtc = new Call SpaceWebRTC();
+        this.webrtc = new CallSpaceWebRTC();
         this.recorder = null;
         this.recordedChunks = [];
         this.recordingStartTime = null;
@@ -30,7 +30,7 @@ class Call SpaceApp {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const page = e.target.dataset.page;
-                this.navigate Page(page);
+                this.navigatePage(page);
             });
         });
         
@@ -680,6 +680,6 @@ class Call SpaceApp {
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.freeVoiceApp = new Call SpaceApp();
+    window.freeVoiceApp = new CallSpaceApp();
     Logger.info('Call Space initialized');
 });
