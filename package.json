@@ -1,0 +1,36 @@
+{
+  "name": "callspace",
+  "version": "1.0.0",
+  "description": "Call Space - Peer-to-peer video conferencing for freedom of speech and human rights",
+  "main": "signaling-server.js",
+  "scripts": {
+    "start": "node signaling-server.js",
+    "dev": "nodemon signaling-server.js"
+  },
+  "keywords": [
+    "webrtc",
+    "video-conferencing",
+    "p2p",
+    "freedom-of-speech",
+    "human-rights",
+    "press-freedom",
+    "low-bandwidth",
+    "vdo-ninja",
+    "obs-integration"
+  ],
+  "author": "Call Space Contributors",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR-USERNAME/callspace.git"
+  }
+}

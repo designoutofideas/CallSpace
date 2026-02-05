@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Call Space - Peer-to-peer video conferencing for freedom of speech and human rights">
+    <title>Call Space - Speak Freely Across the Universe</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated background stars -->
+    <div class="stars-container">
+        <div class="stars"></div>
+        <div class="stars2"></div>
+        <div class="stars3"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo-container">
+                <svg class="logo-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                    <circle cx="24" cy="24" r="20" stroke="url(#gradient1)" stroke-width="2"/>
+                    <circle cx="24" cy="24" r="12" fill="url(#gradient2)"/>
+                    <path d="M24 8V16M24 32V40M8 24H16M32 24H40" stroke="url(#gradient1)" stroke-width="2" stroke-linecap="round"/>
+                    <defs>
+                        <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00ff88"/>
+                            <stop offset="100%" style="stop-color:#9d4edd"/>
+                        </linearGradient>
+                        <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00ff88;stop-opacity:0.3"/>
+                            <stop offset="100%" style="stop-color:#9d4edd;stop-opacity:0.3"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1 class="logo-text">Call Space</h1>
+            </div>
+            <p class="subtitle">Speak Freely Across the Universe</p>
+        </header>
+
+        <!-- Main Grid Layout -->
+        <div class="main-grid">
+            <!-- Video Section -->
+            <div class="video-section">
+                <div class="section-title">
+                    <span class="title-icon">📹</span>
+                    Local Video (You)
+                </div>
+                <div class="video-container">
+                    <video id="localVideo" autoplay muted playsinline></video>
+                    <div class="video-label local-label">
+                        <span class="status-indicator status-offline" id="localStatus"></span>
+                        <span id="localLabel">Camera Off</span>
+                    </div>
+                    <div class="video-controls-overlay">
+                        <button class="control-btn" id="toggleLocalVideo" title="Toggle Video">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                            </svg>
+                        </button>
+                        <button class="control-btn" id="toggleLocalAudio" title="Toggle Audio">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="section-title" style="margin-top: 2rem;">
+                    <span class="title-icon">🌐</span>
+                    Remote Video (Guest)
+                </div>
+                <div class="video-container">
+                    <video id="remoteVideo" autoplay playsinline></video>
+                    <div class="video-label remote-label">
+                        <span class="status-indicator status-offline" id="remoteStatus"></span>
+                        <span id="remoteLabel">Waiting for connection...</span>
+                    </div>
+                    <div id="remoteVideoGrid" class="remote-grid"></div>
+                </div>
+
+                <!-- Connection Statistics -->
+                <div class="stats-section">
+                    <div class="section-title">
+                        <span class="title-icon">📊</span>
+                        Connection Statistics
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Bitrate</div>
+                            <div class="stat-value" id="bitrateValue">0 kbps</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Packets Lost</div>
+                            <div class="stat-value" id="packetsLost">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Resolution</div>
+                            <div class="stat-value" id="resolution">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">FPS</div>
+                            <div class="stat-value" id="fps">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Panel -->
+            <div class="controls-panel">
+                <div class="section-title">
+                    <span class="title-icon">⚙️</span>
+                    Connection Setup
+                </div>
+
+                <div class="info-box">
+                    <strong>How to connect:</strong><br>
+                    1. Start your stream<br>
+                    2. Share your Room ID with guest<br>
+                    3. Guest enters your ID and joins
+                </div>
+
+                <div class="input-group">
+                    <label>Your Room ID</label>
+                    <div class="room-id-display" id="roomId">Click "Start Stream" to generate</div>
+                    <button class="btn-copy" id="copyRoomId" style="display: none;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+
+                <div class="input-group">
+                    <label>Join Remote Room</label>
+                    <input type="text" id="remoteRoomId" placeholder="Enter remote Room ID...">
+                </div>
+
+                <button class="btn btn-primary" id="startBtn" onclick="startStream()">
+                    <span>🚀 Start Stream</span>
+                </button>
+                <button class="btn btn-secondary" id="connectBtn" onclick="connectToPeer()" disabled>
+                    <span>🔗 Connect to Guest</span>
+                </button>
+
+                <div class="section-title" style="margin-top: 2rem;">
+                    <span class="title-icon">🎚️</span>
+                    Quality Settings
+                </div>
+
+                <div class="input-group">
+                    <label>Video Quality (Low-Bandwidth Optimized)</label>
+                    <select id="qualitySelect" onchange="updateQuality()">
+                        <option value="low">Low (240p) - Best for rural</option>
+                        <option value="medium" selected>Medium (360p)</option>
+                        <option value="high">High (480p)</option>
+                        <option value="hd">HD (720p)</option>
+                    </select>
+                </div>
+
+                <div class="settings-grid">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="audioOnlyMode">
+                        <label for="audioOnlyMode">Audio Only Mode</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="echoCancellation" checked>
+                        <label for="echoCancellation">Echo Cancellation</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="noiseSuppression" checked>
+                        <label for="noiseSuppression">Noise Suppression</label>
+                    </div>
+                </div>
+
+                <div class="section-title" style="margin-top: 2rem;">
+                    <span class="title-icon">🎬</span>
+                    Recording & Tools
+                </div>
+
+                <button class="btn btn-secondary" id="recordBtn" onclick="toggleRecording()" disabled>
+                    <span>● Start Recording</span>
+                </button>
+
+                <div class="recording-indicator" id="recordingIndicator">
+                    <div class="recording-dot"></div>
+                    <span>Recording in progress...</span>
+                </div>
+
+                <div class="info-box" style="background: rgba(157, 78, 221, 0.1); border-color: var(--primary-purple);">
+                    <strong>🖥️ OBS Studio Integration:</strong><br>
+                    Add a "Browser Source" in OBS and use this page's URL. Videos will be captured directly into OBS.
+                </div>
+
+                <button class="btn btn-danger" id="endBtn" onclick="endCall()" style="margin-top: 1rem;" disabled>
+                    <span>⏹️ End Call</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="webrtc.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
